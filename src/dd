@@ -1,0 +1,51 @@
+import React, { useState } from "react";
+
+function App() {
+  const [paymentId, setPaymentId] = useState("");
+  const [refundAmount, setRefundAmount] = useState("");
+
+  const handleRefund = () => {
+    fetch(`http://localhost:1000/refund/${paymentId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ refundAmount }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        // handle success case
+      })
+      .catch((error) => {
+        console.error(error);
+        // handle error case
+      });
+  };
+
+  return (
+    <div>
+      <label>
+        Payment ID:
+        <input
+          type="text"
+          value={paymentId}
+          onChange={(e) => setPaymentId(e.target.value)}
+        />
+      </label>
+      <br />
+      <label>
+        Refund Amount (in rupees):
+        <input
+          type="number"
+          value={refundAmount}
+          onChange={(e) => setRefundAmount(e.target.value)}
+        />
+      </label>
+      <br />
+      <button onClick={handleRefund}>Initiate Refund</button>
+    </div>
+  );
+}
+
+export default App;
